@@ -1,43 +1,252 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Dicee</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Next-Gen 3D Animated Dice Battle Game with real-time scoring, interactive sound effects, and confetti celebrations.">
+  <title>Dice Battle Arena | Premium 2-Player Dice Game</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Styles -->
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lobster" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
-
-
 </head>
 
 <body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
 
-  <div class="container">
-    <h1>Rolling...</h1>
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
 
-    <div class="dice">
-      <p>Player 1</p>
-      <img class="img1" src="images/dice6.png">
+  <div class="app-wrapper">
+    <!-- Header / Navbar -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-icon">🎲</div>
+        <div class="brand-text">
+          <h1>DICE DUEL <span class="badge-pro">PRO</span></h1>
+          <p class="subtitle">Ultimate 2-Player Battle Arena</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="header-actions">
+        <!-- Target Mode Selector -->
+        <div class="mode-selector-wrapper">
+          <label for="mode-select" class="visually-hidden">Game Mode</label>
+          <select id="mode-select" class="mode-select" title="Target Score Mode">
+            <option value="0">Endless Play</option>
+            <option value="3" selected>First to 3 Wins</option>
+            <option value="5">First to 5 Wins</option>
+            <option value="10">First to 10 Wins</option>
+          </select>
+        </div>
+
+        <!-- Sound Toggle -->
+        <button id="sound-btn" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">
+          <svg class="sound-on-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+          <svg class="sound-off-icon hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- Reset Button -->
+        <button id="reset-btn" class="icon-btn" title="Reset All Scores" aria-label="Reset Match">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scoreboard Banner -->
+    <section class="scoreboard-container" aria-label="Match Scoreboard">
+      <div class="score-card player1-card">
+        <div class="player-header">
+          <span class="player-dot dot-p1"></span>
+          <span class="player-name-display" id="p1-name-display" title="Click to rename">Player 1</span>
+          <button class="edit-name-btn" id="edit-p1-btn" aria-label="Edit Player 1 Name">✎</button>
+        </div>
+        <div class="score-value" id="p1-score">0</div>
+        <span class="score-label">Victories</span>
+      </div>
+
+      <div class="score-center-stats">
+        <div class="stat-box">
+          <span class="stat-number" id="rounds-count">0</span>
+          <span class="stat-label">Rounds</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-box">
+          <span class="stat-number" id="draws-count">0</span>
+          <span class="stat-label">Draws</span>
+        </div>
+      </div>
+
+      <div class="score-card player2-card">
+        <div class="player-header">
+          <span class="player-dot dot-p2"></span>
+          <span class="player-name-display" id="p2-name-display" title="Click to rename">Player 2</span>
+          <button class="edit-name-btn" id="edit-p2-btn" aria-label="Edit Player 2 Name">✎</button>
+        </div>
+        <div class="score-value" id="p2-score">0</div>
+        <span class="score-label">Victories</span>
+      </div>
+    </section>
+
+    <!-- Main Game Board -->
+    <main class="game-arena">
+      <!-- Status Announcement Banner -->
+      <div class="status-banner" id="status-banner">
+        <div class="status-badge" id="status-badge">Ready to Play</div>
+        <h2 class="status-text" id="status-text">Roll the dice to start!</h2>
+      </div>
+
+      <!-- Duel Stage (Cards + Dice) -->
+      <div class="duel-stage">
+        <!-- Player 1 Zone -->
+        <div class="player-zone zone-p1" id="zone-p1">
+          <div class="zone-indicator">
+            <span class="zone-tag">P1</span>
+            <span class="zone-player-title" id="p1-arena-name">Player 1</span>
+          </div>
+
+          <div class="dice-platform">
+            <div class="dice-wrapper" id="dice1-wrapper">
+              <img class="dice-img" id="img1" src="images/dice6.png" alt="Player 1 Dice showing 6">
+            </div>
+            <div class="dice-shadow"></div>
+          </div>
+
+          <div class="roll-value-pill" id="val1-pill">
+            <span>Score: </span><strong id="val1">6</strong>
+          </div>
+        </div>
+
+        <!-- Center Versus Emblem -->
+        <div class="vs-emblem-wrapper">
+          <div class="vs-circle">
+            <span>VS</span>
+          </div>
+          <div class="vs-pulse"></div>
+        </div>
+
+        <!-- Player 2 Zone -->
+        <div class="player-zone zone-p2" id="zone-p2">
+          <div class="zone-indicator">
+            <span class="zone-tag">P2</span>
+            <span class="zone-player-title" id="p2-arena-name">Player 2</span>
+          </div>
+
+          <div class="dice-platform">
+            <div class="dice-wrapper" id="dice2-wrapper">
+              <img class="dice-img" id="img2" src="images/dice6.png" alt="Player 2 Dice showing 6">
+            </div>
+            <div class="dice-shadow"></div>
+          </div>
+
+          <div class="roll-value-pill" id="val2-pill">
+            <span>Score: </span><strong id="val2">6</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button Area -->
+      <div class="action-dock">
+        <button id="roll-button" class="btn-primary-roll">
+          <span class="btn-shine"></span>
+          <span class="btn-icon">⚡</span>
+          <span class="btn-text">ROLL DICE</span>
+          <span class="btn-shortcut">SPACE</span>
+        </button>
+
+        <div class="dock-subtext">
+          <span>💡 Tip: Press <strong>Spacebar</strong> to roll quickly</span>
+        </div>
+      </div>
+
+      <!-- Recent History Roll Log -->
+      <section class="history-section" aria-label="Recent Roll History">
+        <div class="history-header">
+          <span class="history-title">Recent Rolls</span>
+          <span class="history-count" id="history-count">0 recorded</span>
+        </div>
+        <div class="history-pills" id="history-pills">
+          <div class="empty-history-text">Roll the dice to see match history here...</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Tournament Champion Modal -->
+    <div id="champion-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card">
+        <div class="trophy-animation">🏆</div>
+        <span class="modal-badge">MATCH VICTORY</span>
+        <h3 id="modal-title" class="modal-title">Player 1 is the Champion!</h3>
+        <p class="modal-desc" id="modal-desc">Dominated the arena with a stellar series win!</p>
+
+        <div class="modal-final-scores">
+          <div class="modal-score-item">
+            <span id="modal-p1-label">Player 1</span>
+            <strong id="modal-p1-score">3</strong>
+          </div>
+          <span class="modal-score-vs">-</span>
+          <div class="modal-score-item">
+            <span id="modal-p2-label">Player 2</span>
+            <strong id="modal-p2-score">1</strong>
+          </div>
+        </div>
+
+        <button id="modal-play-again-btn" class="modal-cta-btn">Start New Tournament</button>
+      </div>
     </div>
 
-    <div class="dice">
-      <p>Player 2</p>
-      <img class="img2" src="images/dice6.png">
+    <!-- Rename Player Dialog -->
+    <div id="rename-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+      <div class="modal-card rename-card">
+        <h3 class="modal-title">Customize Player</h3>
+        <p class="modal-desc">Enter a battle tag for your champion:</p>
+        <input type="text" id="rename-input" maxlength="16" class="rename-input" placeholder="Enter name...">
+        <div class="modal-button-group">
+          <button id="rename-cancel-btn" class="btn-secondary">Cancel</button>
+          <button id="rename-save-btn" class="btn-save">Save Name</button>
+        </div>
+      </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p class="footer-credit">
+          Crafted with passion by
+          <a href="https://github.com/shivangranjann" target="_blank" rel="noopener noreferrer" class="github-link">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            <span>shivangranjann</span>
+          </a>
+        </p>
+        <span class="footer-tech-tag">HTML5 • Modern CSS3 • Web Audio API</span>
+      </div>
+    </footer>
   </div>
 
-  <div class="reload">
-    <button type="button" name="button" onclick="refresh()">
-      <i class="fas fa-sync-alt"></i>
-    </button>
-  </div>
-
+  <!-- Main Game Script -->
   <script src="index.js"></script>
 </body>
-
-<footer>
-  https://github.com/shivangranjann
-</footer>
 
 </html>
