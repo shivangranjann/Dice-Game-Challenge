@@ -14,39 +14,53 @@
 .reload button {
   background-color: #4ECCA3;
   border: none;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 1.5rem;
+  padding: 12px 26px;
+  border-radius: 8px;
+  font-size: 1.6rem;
   font-family: 'Indie Flower', cursive;
-  color: #EEEEEE;
+  font-weight: 700;
+  color: #232931;
   cursor: pointer;
-  transition: all 0.5s;
+  box-shadow: 3px 3px 0px #232931;
+  transition: all 0.3s ease;
 }
 
+.reload button:hover {
+  background-color: #EEEEEE;
+  color: #232931;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0px #232931;
+}
 
 .dice {
   text-align: center;
   display: inline-block;
-
+  margin: 0 20px;
 }
-
 
 body {
   background-color: #393E46;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
-  margin: 30px;
+  margin: 20px auto 35px;
   font-family: 'Lobster', cursive;
-  text-shadow: 5px 0 #232931;
-  font-size: 8rem;
+  text-shadow: 4px 4px 0px #232931, 7px 7px 15px rgba(0, 0, 0, 0.45);
+  font-size: clamp(3.2rem, 7.5vw, 6rem);
+  letter-spacing: 1.5px;
+  line-height: 1.2;
   color: #4ECCA3;
 }
 
 p {
-  font-size: 2rem;
+  font-size: 2.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
   color: #4ECCA3;
+  text-shadow: 2px 2px 0px #232931;
   font-family: 'Indie Flower', cursive;
+  margin-bottom: 12px;
 }
 
 img {
@@ -76,7 +90,6 @@ img {
   }
 }
 
-
 footer {
   margin-top: 5%;
   margin-bottom: 30px;
@@ -85,11 +98,22 @@ footer {
   font-family: 'Indie Flower', cursive;
 }
 
+.footer-credit {
+  font-size: 1.5rem;
+  color: #EEEEEE;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0px #232931;
+  margin-bottom: 10px;
+}
+
 footer a {
   color: #4ECCA3;
   text-decoration: none;
   margin: 0 15px;
   font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 2px 2px 0px #232931;
   transition: all 0.3s ease;
   display: inline-block;
 }
@@ -97,6 +121,7 @@ footer a {
 footer a:hover {
   color: #EEEEEE;
   transform: translateY(-3px);
+  text-shadow: 3px 3px 0px #232931;
 }
 
 footer a i {
