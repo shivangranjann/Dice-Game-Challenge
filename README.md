@@ -4,4 +4,5 @@
 ## Connect
 - **GitHub**: [@shivangranjann](https://github.com/shivangranjann)
 - **LinkedIn**: [Shivang Ranjan](https://www.linkedin.com/in/shivangranjann)
+- **Gmail**: [shivangranjan098@gmail.com](mailto:shivangranjan098@gmail.com)
 
