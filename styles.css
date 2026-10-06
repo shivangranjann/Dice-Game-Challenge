@@ -1,129 +1,670 @@
-.container {
-  width: 70%;
-  padding-top: 50px;
-  margin: auto;
-  text-align: center;
+/* ==========================================================================
+   Dicee Challenge - Modern Dark UI Stylesheet
+   Created with clean, semantic Vanilla CSS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & Variables
+   -------------------------------------------------------------------------- */
+:root {
+  /* Colors */
+  --bg-dark: #0a111e;
+  --bg-card: #131d2e;
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --bg-pill: #1a273b;
+
+  /* Accent Colors */
+  --accent-teal: #2dd4bf;
+  --accent-teal-dark: #14b8a6;
+  --accent-teal-glow: rgba(45, 212, 191, 0.22);
+  --accent-gold: #facc15;
+  --accent-gold-dark: #eab308;
+  
+  /* Dice Colors */
+  --dice-red-start: #ef4444;
+  --dice-red-end: #b91c1c;
+  --dice-shadow: rgba(185, 28, 28, 0.3);
+
+  /* Text Colors */
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  /* Typography */
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  /* Transitions */
+  --transition-smooth: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.reload {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  text-align: center;
-}
-
-.reload button {
-  background-color: #4ECCA3;
-  border: none;
-  padding: 12px 26px;
-  border-radius: 8px;
-  font-size: 1.6rem;
-  font-family: 'Indie Flower', cursive;
-  font-weight: 700;
-  color: #232931;
-  cursor: pointer;
-  box-shadow: 3px 3px 0px #232931;
-  transition: all 0.3s ease;
-}
-
-.reload button:hover {
-  background-color: #EEEEEE;
-  color: #232931;
-  transform: translateY(-2px);
-  box-shadow: 4px 4px 0px #232931;
-}
-
-.dice {
-  text-align: center;
-  display: inline-block;
-  margin: 0 20px;
+/* --------------------------------------------------------------------------
+   2. Reset & Base Styles
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background-color: #393E46;
+  font-family: var(--font-family);
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at 12% 15%, rgba(244, 63, 94, 0.16) 0%, transparent 42%),
+    radial-gradient(circle at 88% 15%, rgba(45, 212, 191, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(45, 212, 191, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 15% 85%, rgba(15, 23, 42, 0.6) 0%, transparent 45%);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow-x: hidden;
+  padding: 2.5rem 1.25rem 2rem;
   -webkit-font-smoothing: antialiased;
 }
 
-h1 {
-  margin: 20px auto 35px;
-  font-family: 'Lobster', cursive;
-  text-shadow: 4px 4px 0px #232931, 7px 7px 15px rgba(0, 0, 0, 0.45);
-  font-size: clamp(3.2rem, 7.5vw, 6rem);
-  letter-spacing: 1.5px;
-  line-height: 1.2;
-  color: #4ECCA3;
+/* --------------------------------------------------------------------------
+   3. Subtle Background Decorative Outlines
+   -------------------------------------------------------------------------- */
+.bg-decorations {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 }
 
-p {
-  font-size: 2.3rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #4ECCA3;
-  text-shadow: 2px 2px 0px #232931;
-  font-family: 'Indie Flower', cursive;
-  margin-bottom: 12px;
+/* Tilted Outline Dice */
+.bg-dice {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.05);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 16px;
+  opacity: 0.45;
 }
 
-img {
-  width: 80%;
-  animation: diceTransition 1s;
+.bg-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  justify-self: center;
+  align-self: center;
 }
 
-@keyframes diceTransition {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(90deg);
-  }
-
-  50% {
-    transform: rotate(180deg);
-  }
-
-  75% {
-    transform: rotate(270deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+.bg-dice-top {
+  top: 30px;
+  left: 30px;
+  transform: rotate(-22deg);
 }
 
-footer {
-  margin-top: 5%;
-  margin-bottom: 30px;
-  color: #EEEEEE;
+.bg-dice-top .dot-1 { grid-column: 1; grid-row: 1; }
+.bg-dice-top .dot-2 { grid-column: 3; grid-row: 1; }
+.bg-dice-top .dot-3 { grid-column: 2; grid-row: 2; }
+.bg-dice-top .dot-4 { grid-column: 1; grid-row: 3; }
+.bg-dice-top .dot-5 { grid-column: 3; grid-row: 3; }
+
+.bg-dice-bottom {
+  bottom: 40px;
+  right: 30px;
+  transform: rotate(24deg);
+}
+
+.bg-dice-bottom .dot-1 { grid-column: 1; grid-row: 1; }
+.bg-dice-bottom .dot-2 { grid-column: 3; grid-row: 1; }
+.bg-dice-bottom .dot-3 { grid-column: 2; grid-row: 2; }
+.bg-dice-bottom .dot-4 { grid-column: 1; grid-row: 3; }
+.bg-dice-bottom .dot-5 { grid-column: 3; grid-row: 3; }
+
+/* Subtle floating rings & sparkle marks */
+.bg-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.ring-top-left {
+  top: 175px;
+  left: 215px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(244, 63, 94, 0.28);
+}
+
+.ring-bottom-left {
+  bottom: 220px;
+  left: 60px;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(45, 212, 191, 0.24);
+}
+
+.bg-sparkle {
+  position: absolute;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.sparkle-left {
+  top: 48%;
+  left: 120px;
+  color: rgba(45, 212, 191, 0.25);
+}
+
+.sparkle-right {
+  top: 50%;
+  right: 110px;
+  color: rgba(244, 63, 94, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   4. Main Container & Layout
+   -------------------------------------------------------------------------- */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  font-family: 'Indie Flower', cursive;
 }
 
-.footer-credit {
-  font-size: 1.5rem;
-  color: #EEEEEE;
-  letter-spacing: 1px;
-  text-shadow: 2px 2px 0px #232931;
-  margin-bottom: 10px;
+/* --------------------------------------------------------------------------
+   5. Header Section & Game Result Pill
+   -------------------------------------------------------------------------- */
+.game-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.75rem;
 }
 
-footer a {
-  color: #4ECCA3;
-  text-decoration: none;
-  margin: 0 15px;
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-shadow: 2px 2px 0px #232931;
-  transition: all 0.3s ease;
+/* Top Crown */
+.header-crown {
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 8px rgba(250, 204, 21, 0.35));
+}
+
+/* "Game Result" Pill */
+.result-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+}
+
+.badge-dash {
+  width: 16px;
+  height: 2.5px;
+  background-color: var(--accent-teal);
+  border-radius: 4px;
+  display: inline-block;
+  opacity: 0.85;
+}
+
+.game-result-badge {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #cbd5e1;
+  background-color: #121c2d;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 16px;
+  border-radius: 100px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Main Heading Title */
+.title-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.25rem 0 0.65rem;
+}
+
+h1 {
+  font-family: var(--font-family);
+  font-size: clamp(2.4rem, 6.2vw, 3.85rem);
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--accent-teal);
+  text-shadow: 
+    0 2px 14px rgba(45, 212, 191, 0.35),
+    0 4px 20px rgba(0, 0, 0, 0.4);
+  line-height: 1.15;
+  transition: transform var(--transition-smooth);
+}
+
+/* Doodle dashes flanking main title */
+.title-doodle {
+  width: 28px;
+  height: 28px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  pointer-events: none;
+}
+
+.doodle-left {
+  left: -42px;
+  top: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 12L2 14' stroke='%232DD4BF' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M11 5L5 9' stroke='%23FACC15' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M16 2L14 8' stroke='%2338BDF8' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.doodle-right {
+  right: -42px;
+  top: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 12L26 14' stroke='%23FACC15' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M17 5L23 9' stroke='%23FB7185' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M12 2L14 8' stroke='%23FACC15' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 500;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.sub-dash {
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+/* --------------------------------------------------------------------------
+   6. Player Cards Section
+   -------------------------------------------------------------------------- */
+.players-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+
+.player-card {
+  position: relative;
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--bg-card-border);
+  border-radius: 22px;
+  width: 220px;
+  min-height: 242px;
+  padding: 1.35rem 1.25rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.45);
+  transition: all var(--transition-smooth);
+}
+
+/* Winner Card Highlight */
+.player-card.winner-card {
+  border: 2px solid var(--accent-teal);
+  box-shadow: 
+    0 0 24px var(--accent-teal-glow),
+    0 16px 32px -8px rgba(0, 0, 0, 0.55);
+}
+
+/* Winner Card Doodles */
+.card-doodle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-smooth);
+}
+
+.winner-card .card-doodle {
+  opacity: 1;
+}
+
+.doodle-card-left {
+  left: -28px;
+  top: 45%;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M18 6L8 10' stroke='%232DD4BF' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M20 16L10 18' stroke='%232DD4BF' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.doodle-card-right {
+  right: -28px;
+  top: 45%;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 6L16 10' stroke='%23FACC15' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M4 16L14 18' stroke='%23FACC15' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Player Pill Tag */
+.player-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: var(--bg-pill);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 5px 15px;
+  border-radius: 100px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  transition: all var(--transition-smooth);
+}
+
+.pill-icon {
+  font-size: 0.8rem;
+  color: #38bdf8;
+}
+
+.pill-crown {
+  display: none;
+  font-size: 0.9rem;
+}
+
+/* Winner Pill Highlight */
+.winner-pill {
+  background-color: rgba(45, 212, 191, 0.12);
+  border-color: rgba(45, 212, 191, 0.35);
+  color: var(--accent-teal);
+}
+
+.winner-pill .pill-icon {
+  color: var(--accent-teal);
+}
+
+.winner-pill .pill-crown {
   display: inline-block;
 }
 
-footer a:hover {
-  color: #EEEEEE;
-  transform: translateY(-3px);
-  text-shadow: 3px 3px 0px #232931;
+/* --------------------------------------------------------------------------
+   7. Red CSS Dice & Pips Grid
+   -------------------------------------------------------------------------- */
+.dice-wrapper {
+  margin: 1.1rem 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 600px;
 }
 
-footer a i {
-  margin-right: 6px;
+.dice-face {
+  width: 110px;
+  height: 110px;
+  background: linear-gradient(145deg, var(--dice-red-start) 0%, var(--dice-red-end) 100%);
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 13px;
+  box-shadow: 
+    inset 1.5px 1.5px 3px rgba(255, 255, 255, 0.4),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.35),
+    0 12px 24px -4px rgba(0, 0, 0, 0.5),
+    0 4px 10px var(--dice-shadow);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  user-select: none;
+  cursor: pointer;
+}
+
+.dice-face:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    inset 1.5px 1.5px 3px rgba(255, 255, 255, 0.45),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.35),
+    0 16px 28px -4px rgba(0, 0, 0, 0.6),
+    0 6px 14px var(--dice-shadow);
+}
+
+/* White Pips */
+.pip {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  justify-self: center;
+  align-self: center;
+  box-shadow: 
+    inset 0 2px 2px rgba(0, 0, 0, 0.22),
+    0 1px 1px rgba(255, 255, 255, 0.85);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+/* Dice Face Values: Standard 3x3 layout */
+/* Value 1 */
+.dice-face[data-value="1"] .pip-5 { visibility: visible; opacity: 1; }
+
+/* Value 2 */
+.dice-face[data-value="2"] .pip-1,
+.dice-face[data-value="2"] .pip-9 { visibility: visible; opacity: 1; }
+
+/* Value 3 */
+.dice-face[data-value="3"] .pip-1,
+.dice-face[data-value="3"] .pip-5,
+.dice-face[data-value="3"] .pip-9 { visibility: visible; opacity: 1; }
+
+/* Value 4 */
+.dice-face[data-value="4"] .pip-1,
+.dice-face[data-value="4"] .pip-3,
+.dice-face[data-value="4"] .pip-7,
+.dice-face[data-value="4"] .pip-9 { visibility: visible; opacity: 1; }
+
+/* Value 5 */
+.dice-face[data-value="5"] .pip-1,
+.dice-face[data-value="5"] .pip-3,
+.dice-face[data-value="5"] .pip-5,
+.dice-face[data-value="5"] .pip-7,
+.dice-face[data-value="5"] .pip-9 { visibility: visible; opacity: 1; }
+
+/* Value 6 */
+.dice-face[data-value="6"] .pip-1,
+.dice-face[data-value="6"] .pip-3,
+.dice-face[data-value="6"] .pip-4,
+.dice-face[data-value="6"] .pip-6,
+.dice-face[data-value="6"] .pip-7,
+.dice-face[data-value="6"] .pip-9 { visibility: visible; opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   8. Roll Animation Keyframes
+   -------------------------------------------------------------------------- */
+.dice-face.rolling {
+  animation: diceRollShake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+}
+
+@keyframes diceRollShake {
+  0% { transform: rotate(0deg) scale(1); }
+  20% { transform: rotate(-12deg) translateY(-8px) scale(1.05); }
+  40% { transform: rotate(12deg) translateY(-4px) scale(0.96); }
+  60% { transform: rotate(-8deg) translateY(-6px) scale(1.03); }
+  80% { transform: rotate(8deg) translateY(-2px) scale(0.98); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   9. Roll Action Button
+   -------------------------------------------------------------------------- */
+.reload {
+  margin-top: 0.5rem;
+}
+
+.reload button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background: linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-teal-dark) 100%);
+  color: #0b1320;
+  border: none;
+  padding: 13px 36px;
+  border-radius: 100px;
+  font-family: var(--font-family);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 22px -4px rgba(45, 212, 191, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: all var(--transition-smooth);
+}
+
+.reload button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 26px -4px rgba(45, 212, 191, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  filter: brightness(1.04);
+}
+
+.reload button:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.35);
+}
+
+.reload button:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 4px;
+}
+
+.reload button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Icon rotation during roll */
+.reload button.is-rolling #roll-icon {
+  animation: spinIcon 0.65s linear infinite;
+}
+
+@keyframes spinIcon {
+  100% { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   10. Footer Section & Interactive Links
+   -------------------------------------------------------------------------- */
+footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 3.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.footer-credit {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.author-highlight {
+  color: var(--accent-teal);
+  font-weight: 600;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all var(--transition-smooth);
+}
+
+.footer-links a i.fa-github { color: #f8fafc; }
+.footer-links a i.fa-linkedin { color: #0ea5e9; }
+.footer-links a i.fa-envelope { color: #f43f5e; }
+
+.footer-links a:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.link-divider {
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  body {
+    padding: 1.75rem 1rem 1.5rem;
+  }
+
+  .game-header {
+    margin-bottom: 2rem;
+  }
+
+  .players-section {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .player-card {
+    width: 100%;
+    max-width: 260px;
+    min-height: 220px;
+  }
+
+  .title-doodle {
+    display: none;
+  }
+
+  .doodle-card-left, .doodle-card-right {
+    display: none;
+  }
+
+  .bg-dice-top {
+    left: -20px;
+    top: 10px;
+    transform: rotate(-15deg) scale(0.75);
+  }
+
+  .bg-dice-bottom {
+    right: -20px;
+    bottom: 20px;
+    transform: rotate(15deg) scale(0.75);
+  }
+
+  footer {
+    margin-top: 2.5rem;
+  }
 }

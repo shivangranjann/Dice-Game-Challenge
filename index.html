@@ -3,49 +3,169 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Dicee</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lobster" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dicee | Two Player Dice Game</title>
+
+  <!-- Google Fonts for modern, clean typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,600;0,700;0,800;1,700;1,800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
 
-
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <div class="container">
-    <h1>🎲 Rolling... 🎲</h1>
-
-    <div class="dice">
-      <p>Player 1</p>
-      <img class="img1" src="images/dice6.png" alt="Player 1 Dice">
+  <!-- Background decorative elements -->
+  <div class="bg-decorations" aria-hidden="true">
+    <!-- Top-left tilted outline dice -->
+    <div class="bg-dice bg-dice-top">
+      <span class="bg-dot dot-1"></span>
+      <span class="bg-dot dot-2"></span>
+      <span class="bg-dot dot-3"></span>
+      <span class="bg-dot dot-4"></span>
+      <span class="bg-dot dot-5"></span>
     </div>
 
-    <div class="dice">
-      <p>Player 2</p>
-      <img class="img2" src="images/dice6.png" alt="Player 2 Dice">
+    <!-- Bottom-right tilted outline dice -->
+    <div class="bg-dice bg-dice-bottom">
+      <span class="bg-dot dot-1"></span>
+      <span class="bg-dot dot-2"></span>
+      <span class="bg-dot dot-3"></span>
+      <span class="bg-dot dot-4"></span>
+      <span class="bg-dot dot-5"></span>
     </div>
+
+    <!-- Subtle ambient rings and sparkles -->
+    <span class="bg-ring ring-top-left"></span>
+    <span class="bg-ring ring-bottom-left"></span>
+    <span class="bg-sparkle sparkle-left">✦</span>
+    <span class="bg-sparkle sparkle-right">✦</span>
   </div>
 
-  <div class="reload">
-    <button type="button" name="button" onclick="refresh()">
-      <i class="fas fa-sync-alt"></i> Roll Again
-    </button>
-  </div>
+  <main class="container">
 
+    <!-- Header Section -->
+    <header class="game-header">
+      <!-- Winner Crown -->
+      <div class="header-crown" id="header-crown" aria-hidden="true">
+        <svg width="28" height="24" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 17.5H21.5V19.5H2.5V17.5ZM3.5 15.5L1.5 5.5L7.5 9.5L12 1.5L16.5 9.5L22.5 5.5L20.5 15.5H3.5Z" fill="#FACC15" stroke="#EAB308" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Game Result Pill -->
+      <div class="result-badge-container">
+        <span class="badge-dash left-dash"></span>
+        <span class="game-result-badge">Game Result</span>
+        <span class="badge-dash right-dash"></span>
+      </div>
+
+      <!-- Main Title with Decorative Doodles -->
+      <div class="title-wrapper">
+        <span class="title-doodle doodle-left" aria-hidden="true"></span>
+        <h1 id="main-heading">Player 2 Wins! 🚩</h1>
+        <span class="title-doodle doodle-right" aria-hidden="true"></span>
+      </div>
+
+      <!-- Subtitle -->
+      <p class="subtitle" id="subtitle-text">
+        <span class="sub-dash">―</span> Better luck next time, Player 1! <span class="sub-dash">―</span>
+      </p>
+    </header>
+
+    <!-- Players & Dice Section -->
+    <section class="players-section" aria-label="Dice Arena">
+      <!-- Player 1 Card -->
+      <div class="player-card" id="card-player1">
+        <div class="player-pill" id="pill-player1">
+          <i class="fas fa-user pill-icon"></i>
+          <span class="pill-name">Player 1</span>
+          <span class="pill-crown" aria-hidden="true">👑</span>
+        </div>
+
+        <!-- Red CSS Dice -->
+        <div class="dice-wrapper">
+          <div class="dice-face" id="dice1" data-value="4" role="img" aria-label="Player 1 dice showing 4">
+            <span class="pip pip-1"></span>
+            <span class="pip pip-2"></span>
+            <span class="pip pip-3"></span>
+            <span class="pip pip-4"></span>
+            <span class="pip pip-5"></span>
+            <span class="pip pip-6"></span>
+            <span class="pip pip-7"></span>
+            <span class="pip pip-8"></span>
+            <span class="pip pip-9"></span>
+          </div>
+          <!-- Fallback img element for backward compatibility -->
+          <img class="img1" src="images/dice4.png" alt="Player 1 Dice" style="display: none;">
+        </div>
+      </div>
+
+      <!-- Player 2 Card (Winner card) -->
+      <div class="player-card winner-card" id="card-player2">
+        <!-- Decorative winner burst accents -->
+        <span class="card-doodle doodle-card-left" aria-hidden="true"></span>
+        <span class="card-doodle doodle-card-right" aria-hidden="true"></span>
+
+        <div class="player-pill winner-pill" id="pill-player2">
+          <i class="fas fa-user pill-icon"></i>
+          <span class="pill-name">Player 2</span>
+          <span class="pill-crown" aria-hidden="true">👑</span>
+        </div>
+
+        <!-- Red CSS Dice -->
+        <div class="dice-wrapper">
+          <div class="dice-face" id="dice2" data-value="5" role="img" aria-label="Player 2 dice showing 5">
+            <span class="pip pip-1"></span>
+            <span class="pip pip-2"></span>
+            <span class="pip pip-3"></span>
+            <span class="pip pip-4"></span>
+            <span class="pip pip-5"></span>
+            <span class="pip pip-6"></span>
+            <span class="pip pip-7"></span>
+            <span class="pip pip-8"></span>
+            <span class="pip pip-9"></span>
+          </div>
+          <!-- Fallback img element for backward compatibility -->
+          <img class="img2" src="images/dice5.png" alt="Player 2 Dice" style="display: none;">
+        </div>
+      </div>
+    </section>
+
+    <!-- Roll Action Button -->
+    <div class="reload">
+      <button type="button" id="roll-button" onclick="refresh()" aria-label="Roll the dice again">
+        <i class="fas fa-sync-alt" id="roll-icon"></i>
+        <span>Roll Again</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer Section -->
   <footer>
-    <p class="footer-credit">Created by Shivang Ranjan</p>
-    <a href="https://github.com/shivangranjann" target="_blank" rel="noopener noreferrer">
-      <i class="fab fa-github"></i> GitHub
-    </a>
-    <a href="https://www.linkedin.com/in/shivangranjann" target="_blank" rel="noopener noreferrer">
-      <i class="fab fa-linkedin"></i> LinkedIn
-    </a>
-    <a href="mailto:shivangranjan098@gmail.com">
-      <i class="fas fa-envelope"></i> Gmail
-    </a>
+    <p class="footer-credit">Created by <span class="author-highlight">Shivang Ranjan</span></p>
+    <div class="footer-links">
+      <a href="https://github.com/shivangranjann" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <span class="link-divider" aria-hidden="true">|</span>
+      <a href="https://www.linkedin.com/in/shivangranjann" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-linkedin"></i> Linkedin
+      </a>
+      <span class="link-divider" aria-hidden="true">|</span>
+      <a href="mailto:shivangranjan098@gmail.com">
+        <i class="fas fa-envelope"></i> Gmail
+      </a>
+    </div>
   </footer>
 
+  <!-- Game Logic Script -->
   <script src="index.js"></script>
 </body>
 
